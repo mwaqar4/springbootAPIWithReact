@@ -28,7 +28,7 @@
     "eject": "react-scripts eject",
     "start-backend": "cd backend/ && mvn spring-boot:run",
     "install-packages": "npm run start",
-    "webappd": "concurrently --kill-others-on-fail \"npm run install-packages\" \"npm run start-backend\""
+    "webapp": "concurrently --kill-others-on-fail \"npm run install-packages\" \"npm run start-backend\""
 
   },
   "eslintConfig": {
