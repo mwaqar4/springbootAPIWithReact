@@ -27,10 +27,27 @@ const App = (props) => {
       setLoader(true)
       const { data } = await axios.get(`${API_URL}/api/v1/companies`);
       setErrorMsg('');
-      setCompaniesList(data.content);
+      data.content.forEach(
+        e =>{
+          getAverageSalary(e)
+        }
+      )
       setLoader(false)
     } catch (error) {
       error.response && setErrorMsg(error);
+    }
+  }
+
+  const getAverageSalary = async(e) => {
+    try{
+      const { data } = await axios.get(`${API_URL}/api/v1/companies/${e.id}/avg_salary`);
+      const salaryObj = {"avg_salary":data}
+      const wholeData = {...e, ...salaryObj}
+      setCompaniesList(prevData => [...prevData ,wholeData]);
+      setLoader(false)
+    }
+    catch(error){
+      error.response && setErrorMsg(error)
     }
   }
 
@@ -48,7 +65,9 @@ const App = (props) => {
           'Content-Type': 'application/json'
         }
       });
-      getAllCompanies()
+      props.history.push('/list')
+      props.history.push('/')
+
       closeModal()
     }
 
@@ -56,7 +75,8 @@ const App = (props) => {
 
   const deleteCompany = async(id) => {
     await axios.delete(`${API_URL}/api/v1/companies/`+id)
-    getAllCompanies()
+    props.history.push('/list')
+    props.history.push('/')
   }
 
   const addCompany = async() => {
@@ -73,8 +93,9 @@ const App = (props) => {
           'Content-Type': 'application/json'
         }
       });
-      getAllCompanies()
       closeModal()
+      props.history.push('/list')
+      props.history.push('/')
     }
   }
 
@@ -112,6 +133,7 @@ const App = (props) => {
               <div className='modal-body'>
                 <p>Enter company name:</p>
                 <input style={{width:"100%"}} type="text" ref={inputNameRef}></input>
+                {modalError && <p className="errorMsg">{modalError}</p>}
                 <Button style={{marginTop:"5px"}} onClick={() =>  addCompany()}>Add</Button>
               </div>
             </div>
@@ -127,6 +149,7 @@ const App = (props) => {
                 <div className='modal-body'>
                   <p>Enter company name:</p>
                   <input style={{width:"100%"}} type="text" ref={inputNameRef}></input>
+                  {modalError && <p className="errorMsg">{modalError}</p>}
                   <Button style={{marginTop:"5px"}} onClick={() =>  updateCompany()}>Update</Button>
                 </div>
               </div>
@@ -144,16 +167,19 @@ const App = (props) => {
             <tr>
               <th>ID</th>
               <th>Name</th>
+              <th>Average Salary</th>
+
 
             </tr>
           </thead>
           <tbody>
             {companiesList.length > 0 ? (
               companiesList.map(
-                ({ id, name }) => (
+                ({ id, name, avg_salary }) => (
                   <tr key={id}>
                     <td className="document-title">{id}</td>
                     <td className="document-description">{name}</td>
+                    <td className="document-description">{avg_salary}</td>
                     <td className="document-description" onClick={() =>openModal("update", id)}>
                       <a style={{alignSelf:'center', justifySelf:'center'}}
                         href="#/">
