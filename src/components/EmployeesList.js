@@ -153,7 +153,7 @@ const EmployeesList = (props) => {
             <div className='modal-inner'>
               <div className='modal-header'>
                 <p className='modal-title'>Add Employee</p>
-                  <img className='modal-close' src={closeIcon} onClick={()=>closeModal()}/>
+                  <img className='modal-close' style={{width:"5%"}} src={closeIcon} onClick={()=>closeModal()}/>
               </div>
               <div className='modal-body'>
                 <div style={{display:'flex', width:'100%', margin:'5px'}}>
@@ -191,7 +191,7 @@ const EmployeesList = (props) => {
               <div className='modal-inner'>
                 <div className='modal-header'>
                   <p className='modal-title'>Update Employee</p>
-                    <img className='modal-close' src={closeIcon} onClick={()=>closeModal()}/>
+                    <img className='modal-close' style={{width:"5%"}} src={closeIcon} onClick={()=>closeModal()}/>
                 </div>
                 <div className='modal-body'>
                   <div style={{display:'flex', width:'100%', margin:'5px'}}>
